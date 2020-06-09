@@ -2,14 +2,10 @@
 layout: page
 title: About
 permalink: /about/
+published: true
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+I'm a Solution Engineer (pre-sales consultant) currently working for Tableau (a Salesforce company). I enjoy solving data problems, working on cars and playing dota.
 
 ### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+Message me on LinkedIn https://www.linkedin.com/in/leebondkennedy/
