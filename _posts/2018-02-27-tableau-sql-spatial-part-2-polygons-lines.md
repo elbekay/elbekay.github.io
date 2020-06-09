@@ -1,11 +1,12 @@
 ---
 layout: post
-title: Tableau & SQL Spatial Part 2 - Polygons, Lines & Points
+title: 'Tableau & SQL Spatial Part 2 - Polygons, Lines & Points'
 date: '2018-02-27T12:40:14+11:00'
 tags: []
-tumblr_url: https://lbk.io/post/171328516293/tableau-sql-spatial-part-2-polygons-lines
+tumblr_url: 'https://lbk.io/post/171328516293/tableau-sql-spatial-part-2-polygons-lines'
+published: true
 ---
-In this post we’ll look at points in polygons and polygons intersecting other polygons. This is a follow up to my previous post on getting started with Tableau and Microsoft SQL Spatial. I’m not a MS SQL spatial expert by any means, if you see me doing something silly please tweet [@elbekay](https://tmblr.co/mpJCw4H-fqsstUCfx72vFaQ)
+In this post we’ll look at points in polygons and polygons intersecting other polygons. This is a follow up to my previous post on getting started with Tableau and Microsoft SQL Spatial. I’m not a MS SQL spatial expert by any means, if you see me doing something silly contact me.
 
 Previous post here:&nbsp;[http://www.lbk.io/post/170562388033/tableau-sql-server-spatial](http://www.lbk.io/post/170562388033/tableau-sql-server-spatial)
 
