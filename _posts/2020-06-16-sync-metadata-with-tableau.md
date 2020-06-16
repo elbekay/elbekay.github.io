@@ -57,25 +57,67 @@ This is a query that will find all tables connected to a BigQuery database and f
     }
 
 This will produce an output like below.
-Two key piecse of information we need are
-1. The value under fullName to link to BigQuery is the table id.
-2. The luid which is the used to uniquely identify the Table when using the Tabelea REST API metadata methods.
+Two key pieces of information we need are
+1. The value under **fullName** to link to BigQuery is the table id.
+2. The **luid** which is the used to uniquely identify the Table when using the Tabelea REST API metadata methods.
 
 
-	{
- 	 "data": {
-      "databaseTables": [
         {
-          "id": "c91df9a7-e3e4-7edb-ba05-17e7a06d2cc3",
-          "luid": "16ae4890-3a29-4c42-aaba-ea5b4f312a6e",
-          "connectionType": "bigquery",
-          "fullName": "[google-project-id.google-project-id].[orders]",
-          "schema": "superstore",
-          "isCertified": true
-        }
-        ]
-      }
-  	}
+         "data": {
+          "databaseTables": [
+            {
+              "id": "c91df9a7-e3e4-7edb-ba05-17e7a06d2cc3",
+              "luid": "16ae4890-3a29-4c42-aaba-ea5b4f312a6e",
+              "connectionType": "bigquery",
+              "fullName": "[google-project-id.google-project-id].[orders]",
+              "schema": "superstore",
+              "isCertified": true
+            }
+            ]
+          }
+       }
+
+You can query Tableau Server with GraphiQL using the Tableau Server Client library using the _metadata.query_ function which will return JSON just like above.
+
+    server.metadata.query(query=metadata_query)
+
+We also need to ask populate the Columns (Name, ID, Description etc.) for each table, for this we can use the _tables.populatecolumns_ method using the _luid_ value from the metadata api:
+
+    #get table by id
+    table = server.tables.get_by_id(table_id)
+    
+    # populate columns
+    server.tables.populate_columns(table)
+
+Finally we need a way to update the metadata (once we retrieve it from BigQuery) for this we can use _server.tables.updatecolumn_:
+
+	tableau_column.description = "My New Description"
+    server.tables.update_column(tableau_table, tab_column)
+
+
+### Querying BigQuery
+
+For BigQuery metadata queries we're using the BigQuery python library and all we need is the table_id (which we got from the Tableau Metadata API, from there we can access the schema (which contains the metadata).
+
+	# get the BigQuery table by ID in format [google-project-id].[google-project-id].[orders]
+    bigquery_table = client.get_table(table_id)
+    # access the schema
+	schema = bigquery_table.schema
+    # loop through columns 
+    for column in schema:
+    	# do stuff
+        description = column.description
+        
+### Putting it together
+
+We have the basic building blocks now so we can:
+
+1. Query & iterate through tables on Tableau Server that connect to BigQuery
+2. For each of the tables from (1.) query BigQuery for the table.
+3. Match the columns names between BigQuery & Tableau columns, and update the description for each column in Tableau.
+4. Push the metadata back to Tableau.
+
+
 
 
 
