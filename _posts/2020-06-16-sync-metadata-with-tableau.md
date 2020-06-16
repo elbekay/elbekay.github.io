@@ -56,7 +56,7 @@ This is a query that will find all tables connected to a BigQuery database and f
         }
     }
 
-asdf
+This will produce an output like below, a key piece of information we need to link to BigQuery is the table id, which is in under fullName.
 
 	{
  	 "data": {
