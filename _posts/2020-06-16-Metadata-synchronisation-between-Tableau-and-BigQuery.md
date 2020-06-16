@@ -45,7 +45,7 @@ For this we need to rely on the Metadata API which allows you to use GraphiQL to
 
 This is a query that will find all tables connected to a BigQuery database and for each table will retrieve a number of different attributes:
 
-```json
+```
 query getTables {
 databaseTables (filter:{connectionType:"bigquery"}) {
     id
