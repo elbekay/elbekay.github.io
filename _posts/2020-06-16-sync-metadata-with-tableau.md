@@ -33,13 +33,42 @@ We want to address this by syncing from BigQuery to Tableau.
 
 ### What we need to approach this
 
-We'll need a few things to approach this:
+We'll need a few things to approach this and I've chosen Python to do this due to the great Tableau Server Client library:
 
 1. A way to query metadata from BigQuery. For this we can use the [BigQuery API Client Libraries](https://cloud.google.com/bigquery/docs/reference/libraries).
 2. A way to query metadata from Tableau Server or Online. This is done via the Tableau REST API which we can query more easily with the [Tableau Server Client library](https://tableau.github.io/server-client-python/docs/).
 3. We'll want a way to run the synchronisation regularly, in this case a Google Cloud Function is used but it could really be implemented anywhere you can schedule your code or script to run. 
 
 ### Querying for Tableau metadata
+
+For this we need to rely on the Metadata API which allows you to use GraphiQL to query our data catalog for lineage information. You can read more about it [here](https://help.tableau.com/current/api/metadata_api/en-us/index.html).
+
+	query getTables {
+        databaseTables (filter:{connectionType:"%s"}) {
+            id
+            luid
+            connectionType
+            fullName
+            schema
+            isCertified
+        }
+    }
+
+	{
+    \"data\": {
+      "databaseTables": [
+        {
+          "id": "c91df9a7-e3e4-7edb-ba05-17e7a06d2cc3",
+          "luid": "16ae4890-3a29-4c42-aaba-ea5b4f312a6e",
+          "connectionType": "bigquery",
+          "fullName": "[triple-virtue-162804.superstore].[orders]",
+          "schema": "superstore",
+          "isCertified": true
+        }
+      ]
+    }
+  	}
+
 
 
 
