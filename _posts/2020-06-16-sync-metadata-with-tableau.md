@@ -43,8 +43,10 @@ We'll need a few things to approach this and I've chosen Python to do this due t
 
 For this we need to rely on the Metadata API which allows you to use GraphiQL to query our data catalog for lineage information. You can read more about it [here](https://help.tableau.com/current/api/metadata_api/en-us/index.html).
 
+This is a query that will find all tables connected to a BigQuery database and for each table will retrieve a number of different attributes:
+
 	query getTables {
-        databaseTables (filter:{connectionType:"%s"}) {
+        databaseTables (filter:{connectionType:"bigquery"}) {
             id
             luid
             connectionType
@@ -54,19 +56,21 @@ For this we need to rely on the Metadata API which allows you to use GraphiQL to
         }
     }
 
+asdf
+
 	{
-    \"data\": {
+ 	 "data": {
       "databaseTables": [
         {
           "id": "c91df9a7-e3e4-7edb-ba05-17e7a06d2cc3",
           "luid": "16ae4890-3a29-4c42-aaba-ea5b4f312a6e",
           "connectionType": "bigquery",
-          "fullName": "[google-project-id.dataset-id].[orders]",
+          "fullName": "[google-project-id.google-project-id].[orders]",
           "schema": "superstore",
           "isCertified": true
         }
-      ]
-    }
+        ]
+      }
   	}
 
 
