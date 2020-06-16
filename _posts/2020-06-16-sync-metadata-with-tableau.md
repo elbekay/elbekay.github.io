@@ -61,7 +61,7 @@ For this we need to rely on the Metadata API which allows you to use GraphiQL to
           "id": "c91df9a7-e3e4-7edb-ba05-17e7a06d2cc3",
           "luid": "16ae4890-3a29-4c42-aaba-ea5b4f312a6e",
           "connectionType": "bigquery",
-          "fullName": "[triple-virtue-162804.superstore].[orders]",
+          "fullName": "[google-project-id.dataset-id].[orders]",
           "schema": "superstore",
           "isCertified": true
         }
