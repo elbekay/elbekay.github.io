@@ -56,7 +56,11 @@ This is a query that will find all tables connected to a BigQuery database and f
         }
     }
 
-This will produce an output like below, a key piece of information we need to link to BigQuery is the table id, which is in under fullName.
+This will produce an output like below.
+Two key piecse of information we need are
+1. The value under fullName to link to BigQuery is the table id.
+2. The luid which is the used to uniquely identify the Table when using the Tabelea REST API metadata methods.
+
 
 	{
  	 "data": {
