@@ -3,13 +3,13 @@ published: true
 ---
 ## Part 1: Metadata synchronisation between Tableau and BigQuery (or other dbs)
 
-### Overview of of we're trying to address
+### Overview of we're trying to address
 
 _Note: This blog uses BigQuery as the datasource, but the concepts could be applied to any other datasource. BigQuery was chosen simply because a client recently asked me about it._
 
 Recently a client who was building a data platform with BigQuery had a query about synchronising metadata (Column Descriptions in this case) between the BigQuery and Tableau's table assets. This gave me a good excuse to do some self-learning about using our Metadata API (part of Data Catalog) and REST API.
 
-This is Part 1 which looks synchronisation from BigQuery to Tableau. When I write Part 2 I'll cover the other direction which is the other direction; from Tableau to BigQuery.
+This is Part 1 which looks synchronisation from BigQuery to Tableau. When I write Part 2 I'll cover the other direction which is  from Tableau to BigQuery.
 
 Currently the metadata API only allows for updates of table assets, not of Tableau Data Sources. I'm hopeful that Data Sources metadata updates are supported via the API in a future release.
 
@@ -91,9 +91,10 @@ We also need to ask populate the Columns (Name, ID, Description etc.) for each t
 
 Finally we need a way to update the metadata (once we retrieve it from BigQuery) for this we can use _server.tables.updatecolumn_:
 
-	tableau_column.description = "My New Description"
-    server.tables.update_column(tableau_table, tab_column)
-
+```python
+tableau_column.description = "My New Description"
+server.tables.update_column(tableau_table, tab_column)
+```
 
 ### Querying BigQuery
 
