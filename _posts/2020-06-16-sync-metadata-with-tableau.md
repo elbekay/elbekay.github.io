@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 ---
 ## Part 1: Metadata synchronisation between Tableau and BigQuery (or other dbs)
 
