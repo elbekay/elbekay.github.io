@@ -17,17 +17,17 @@ The aim in this is to introduce & show the concepts / API endpoints involved and
 
 First thing is to introduce what we're focused on. In Tableau Server assets are structured into a lineage, so you can see the end to end linkage between Dashboards & underlying Databases. In this case we're looking at the Tables section of the lineage (highlighted with an arrow), which map to tables from the underlying database. The node selected below this is a [Tableau Data Source](https://help.tableau.com/current/pro/desktop/en-us/publish_datasources_about.htm#:~:text=A%20Tableau%20data%20source%20consists,tables%20from%20different%20data%20types.) which is similar to a semantic layer or reusable data model on top of one or more databases - we'll look at these in Part 2.
 
-![lineage.png]({{site.baseurl}}/_posts/lineage.png)
+![lineage.png]({{site.baseurl}}/images/lineage.png)
 
 In this example we'll look at a table called Orders, which comes from my BigQuery instance.
 
 **It currently doesn't have any metadata descibing each column:**
 
-![orders_table.png]({{site.baseurl}}/_posts/orders_table.png)
+![orders_table.png]({{site.baseurl}}/images/orders_table.png)
 
 **But the metadata for Description exists within BigQuery:**
 
-![bq_schema.png]({{site.baseurl}}/_posts/bq_schema.png)
+![bq_schema.png]({{site.baseurl}}/images/bq_schema.png)
 
 We want to address this by syncing from BigQuery to Tableau.
 
@@ -119,7 +119,7 @@ We have the basic building blocks now so we can:
 
 After running the rough sample code below we find the descriptions populated in Tableau. You can see a [video of this here](https://www.youtube.com/watch?v=l6_uL7GVFS0).
 
-![metadata_populated.png]({{site.baseurl}}/_posts/metadata_populated.png)
+![metadata_populated.png]({{site.baseurl}}/images/metadata_populated.png)
 
 
 Rough sample code:
