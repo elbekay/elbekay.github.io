@@ -9,7 +9,7 @@ _Note: This blog uses BigQuery as the datasource, but the concepts could be appl
 
 Recently a client who was building a data platform with BigQuery had a query about synchronising metadata (Column Descriptions in this case) between the BigQuery and Tableau's table assets. This gave me a good excuse to do some self-learning about using our Metadata API (part of Data Catalog) and REST API.
 
-This is Part 1 which looks syncronisation from BigQuery to Tableau. When I write Part 2 I'll cover the other direction which is the other direction; from Tableau to BigQuery.
+This is Part 1 which looks synchronisation from BigQuery to Tableau. When I write Part 2 I'll cover the other direction which is the other direction; from Tableau to BigQuery.
 
 Currently the metadata API only allows for updates of table assets, not of Tableau Data Sources. I'm hopeful that Data Sources metadata updates are supported via the API in a future release.
 
@@ -59,7 +59,7 @@ This is a query that will find all tables connected to a BigQuery database and f
 This will produce an output like below.
 Two key pieces of information we need are
 1. The value under **fullName** to link to BigQuery is the table id.
-2. The **luid** which is the used to uniquely identify the Table when using the Tabelea REST API metadata methods.
+2. The **luid** which is the used to uniquely identify the Table when using the Tableau REST API metadata methods.
 
 
         {
@@ -117,8 +117,90 @@ We have the basic building blocks now so we can:
 3. Match the columns names between BigQuery & Tableau columns, and update the description for each column in Tableau.
 4. Push the metadata back to Tableau.
 
+After running the rough sample code below we find the descriptions populated in Tableau. You can see a [video of this here](https://www.youtube.com/watch?v=l6_uL7GVFS0).
+
+![metadata_populated.png]({{site.baseurl}}/_posts/metadata_populated.png)
 
 
+Rough sample code:
+
+      from google.cloud import bigquery
+      import tableauserverclient as TSC
+
+      tableau_auth = TSC.PersonalAccessTokenAuth('tsc', 'my_persona_token', 'mysite')
+      server = TSC.Server('https://tableauserver', use_server_version=True)
+
+      # sign into Tableau server
+      tab_serv = server.auth.sign_in(tableau_auth)
+
+      # create bigquery client
+      client = bigquery.Client()
+
+      def sync_metadata(request):
+          # get tables which connect to bigquery
+          tables = getTables()
+
+          # loop through tables from tableau
+          #   get bigquery table by id
+          #   sync metadata between them
+          for table in tables:
+              tab_table = getColsByTableID( table['luid'] )
+              bq_dataset_id = getBQDatasetID( table )
+              bq_table = get_table( bq_dataset_id )
+              updateColumns(bq_table, tab_table)
+
+      # get a bigquery table by bigquery table id
+      def get_table(table_id):
+          return client.get_table(table_id)
+
+      # get tables from tableau which connect to bigquery
+      #   connection type is a filter, could be snowflake/redshift/other dbs
+      def getTables(connectionType = "bigquery"):
+
+          # GraphiQL metadata query for tableau 
+          md_query = '''
+          query getTables {
+              databaseTables (filter:{connectionType:"%s"}) {
+                  id
+                  luid
+                  connectionType
+                  fullName
+                  schema
+                  isCertified
+              }
+          }
+          ''' % format(connectionType)
+
+          return server.metadata.query(query=md_query)['data']['databaseTables']
+
+      # tidy bigquery table id
+      def getBQDatasetID(md_bq_table):
+          return md_bq_table['fullName'].replace('[','').replace(']','')
+
+      # sync metadata
+      def updateColumns(db_table, tableau_table):
+          # for each column in the db_table
+          #   check for a matching column in the tableau_table
+          #   then update the description of the tableau_table
+          for db_col in db_table.schema:
+              for tab_col in tableau_table.columns:
+                  if db_col.name == tab_col.name:
+                      if db_col.description is None or len(db_col.description) > 0:
+                          tab_col.description = db_col.description
+                      else:
+                          tab_col.description = " "
+
+                      server.tables.update_column(tableau_table, tab_col)
+
+      # populate columns for tableau tables
+      def getColsByTableID(table_id):
+          #get table by id
+          table = server.tables.get_by_id(table_id)
+
+          # populate columns
+          server.tables.populate_columns(table)
+
+          return table
 
 
 
