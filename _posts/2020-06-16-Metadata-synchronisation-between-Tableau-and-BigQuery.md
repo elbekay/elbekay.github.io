@@ -82,7 +82,9 @@ Two key pieces of information we need are
 
 You can query Tableau Server with GraphiQL using the Tableau Server Client library using the _metadata.query_ function which will return JSON just like above.
 
-    server.metadata.query(query=metadata_query)
+```python
+server.metadata.query(query=metadata_query)
+```
 
 We also need to ask populate the Columns (Name, ID, Description etc.) for each table, for this we can use the _tables.populatecolumns_ method using the _luid_ value from the metadata api:
 
